@@ -1,3 +1,32 @@
 @mainColor: blue;
 
 @import "pizza/pizza-card";
+
+
+@CartWidth: 300px;
+@NavHeight: 50px;
+@import "pizza/navigation-panel";
+
+
+body {
+  background-color: rgba(255, 208, 7, 0.2);
+  margin-right: @CartWidth;
+  margin-top: @NavHeight + 20px;
+}
+
+.container{
+  width: 100%;
+}
+
+#cart {
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  min-width: @CartWidth;
+
+
+
+  background-color: aqua;
+
+}

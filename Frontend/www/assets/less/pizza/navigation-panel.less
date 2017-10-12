@@ -1,0 +1,30 @@
+@FlagLeft: 20px;
+@FlagWidth: 50px;
+
+#nav-panel {
+  background-color: rgba(0, 0, 0, 0.83);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: @CartWidth;
+  height: @NavHeight;
+  z-index: 1;
+
+  .flag {
+    position: fixed;
+    left: @FlagLeft;
+    background-color: #EA862E;
+    width: @FlagWidth;
+    height: @NavHeight;
+  }
+
+  .flag-end {
+    position: fixed;
+    top: @NavHeight - 15px;
+    left: @FlagLeft;
+    width: @FlagWidth;
+    height: @NavHeight;
+    transform: rotate(180deg);
+    background-image: url("../../images/discount.svg");
+  }
+}
