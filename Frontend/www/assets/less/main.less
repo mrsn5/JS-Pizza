@@ -48,6 +48,10 @@ body {
 
 
 .footer {
+  position: absolute;
+  bottom: 0;
+  left:0;
+  right: @CartWidth;
   background-color: white;
   color: darkgrey;
   text-align: center;
@@ -56,4 +60,11 @@ body {
   p {
     margin: 10px;
   }
+}
+
+.clearfix::after {
+  visibility: hidden; //Робить елемент невидимим display: block;
+  content:""; //Порожнім
+  height: 0; //Без висоти
+  clear: both;
 }
