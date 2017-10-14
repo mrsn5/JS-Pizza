@@ -1,17 +1,19 @@
 @mainColor: #EA862E;
-
-@import "pizza/pizza-card";
-
-
 @CartWidth: 300px;
 @NavHeight: 60px;
-@import "pizza/navigation-panel";
 
+* {
+  font-family: "Helvetica Neue", sans-serif;
+}
+
+@import "pizza/pizza-card";
+@import "pizza/navigation-panel";
+@import "pizza/content";
 
 body {
   background-color: rgba(255, 208, 7, 0.09);
   margin-right: @CartWidth;
-  margin-top: @NavHeight + 20px;
+  margin-top: @NavHeight;
 }
 
 .container{
@@ -27,6 +29,17 @@ body {
   box-shadow: -4px 0 10px rgba(147, 141, 89, 0.43);
 
   background-color: #ffed9b;
+}
+
+@media (max-width: 600px) {
+  body {
+    min-width: @CartWidth;
+  }
+
+  #cart {
+    right: auto;
+    left: @CartWidth;
+  }
 }
 
 .btn {

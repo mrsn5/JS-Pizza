@@ -10,6 +10,7 @@
   height: @NavHeight;
   z-index: 1;
   padding-left: 110px;
+  min-width: @CartWidth;
 
   .flag {
     position: fixed;
@@ -20,7 +21,6 @@
     padding-top: 10px;
     z-index: 2;
     color: white;
-    font-family: "Helvetica Neue", sans-serif;
     text-align: center;
 
     .pizza {
@@ -63,11 +63,23 @@
       font-size: 10px;
     }
 
+    @media (max-width: 767px) {
+      .worktime {
+        display: none;
+      }
+    }
+
     .freedeliver {
       vertical-align: sub;
       display: inline-block;
       margin-left: 25px;
       font-size: 12px;
+    }
+
+    @media (max-width: 991px) {
+      .freedeliver {
+        display: none;
+      }
     }
 
     .exit {
@@ -76,8 +88,14 @@
     }
   }
 
-  .nav-pizza{
+  .nav-pizza {
     padding-top: 2px;
     color: white;
+  }
+
+  @media (max-width: 600px) {
+    .nav-pizza {
+      display: none;
+    }
   }
 }
