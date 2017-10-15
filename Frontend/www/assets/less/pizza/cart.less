@@ -16,6 +16,14 @@
     background-color: white;
     h3 {
       margin: 0;
+      display: inline-block;
+    }
+    .clear {
+      color: #d8d8d8;
+      font-size: 12px;
+      float: right;
+      padding-right: 20px;padding-top: 5px;
+      cursor: pointer;
     }
   }
 
@@ -29,7 +37,8 @@
     right: 0;
     z-index: 3;
     bottom: @CartButtHeight;
-
+    overflow-y: scroll;
+    overflow-x: hidden;
     .row-order {
       @RowHeight: 115px;
       position: relative;
@@ -56,6 +65,9 @@
 
       .delete {
         color: #EA862E;
+      }
+      .price {
+        font-weight: bold;
       }
       .pizza-img {
         position: absolute;
