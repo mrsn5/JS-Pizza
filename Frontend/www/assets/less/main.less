@@ -9,6 +9,7 @@
 @import "pizza/pizza-card";
 @import "pizza/navigation-panel";
 @import "pizza/content";
+@import "pizza/cart";
 
 body {
   background-color: rgba(255, 208, 7, 0.09);
@@ -20,27 +21,6 @@ body {
   width: 100%;
 }
 
-#cart {
-  position: fixed;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  min-width: @CartWidth;
-  box-shadow: -4px 0 10px rgba(147, 141, 89, 0.43);
-
-  background-color: #ffed9b;
-}
-
-@media (max-width: 600px) {
-  body {
-    min-width: @CartWidth;
-  }
-
-  #cart {
-    right: auto;
-    left: @CartWidth;
-  }
-}
 
 .btn {
   /*padding: 2px 10px 2px 10px;*/
@@ -48,7 +28,6 @@ body {
 
 
 .footer {
-  position: absolute;
   bottom: 0;
   left:0;
   right: @CartWidth;
@@ -62,9 +41,10 @@ body {
   }
 }
 
+/*
 .clearfix::after {
   visibility: hidden; //Робить елемент невидимим display: block;
   content:""; //Порожнім
   height: 0; //Без висоти
   clear: both;
-}
+}*/
