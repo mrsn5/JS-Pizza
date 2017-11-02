@@ -2,6 +2,7 @@
  * Created by chaika on 02.02.16.
  */
 var Templates = require('../Templates');
+var Storage = require('../LocalStorage');
 
 //Перелік розмірів піци
 var PizzaSize = {
@@ -23,6 +24,7 @@ function addToCart(pizza, size) {
     function samePizza(obj) {
         return obj.pizza.id === pizza.id && obj.size === size;
     }
+
     var same = Cart.filter(samePizza);
     if (same.length > 0) {
         same[0].quantity++;
@@ -49,7 +51,10 @@ function removeFromCart(cart_item) {
 function initialiseCart() {
     //Фукнція віпрацьвуватиме при завантаженні сторінки
     //Тут можна наприклад, зчитати вміст корзини який збережено в Local Storage то показати його
-    //TODO: ...
+    var saved_orders = Storage.get("cart");
+    if (saved_orders) {
+        Cart = saved_orders;
+    }
 
     updateCart();
 }
@@ -73,7 +78,7 @@ function updateCart() {
 
         var $node = $(html_code);
 
-        $node.find(".plus").click(function(){
+        $node.find(".plus").click(function () {
             //Збільшуємо кількість замовлених піц
             cart_item.quantity += 1;
 
@@ -81,7 +86,7 @@ function updateCart() {
             updateCart();
         });
 
-        $node.find(".minus").click(function(){
+        $node.find(".minus").click(function () {
             //Зменшуємо кількість замовлених піц
             if (cart_item.quantity == 1) removeFromCart(cart_item);
             cart_item.quantity -= 1;
@@ -89,7 +94,7 @@ function updateCart() {
             //Оновлюємо відображення
             updateCart();
         });
-        $node.find(".delete").click(function(){
+        $node.find(".delete").click(function () {
             removeFromCart(cart_item);
 
             //Оновлюємо відображення
@@ -100,6 +105,7 @@ function updateCart() {
     }
 
     Cart.forEach(showOnePizzaInCart);
+    Storage.set("cart",	Cart);
 
 }
 
