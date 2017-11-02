@@ -223,7 +223,6 @@ var Cart = [];
 var $cart = $("#order");
 
 
-
 function addToCart(pizza, size) {
     //Додавання однієї піци в кошик покупок
 
@@ -271,6 +270,7 @@ function updateCart() {
     //Функція викликається при зміні вмісту кошика
     //Тут можна наприклад показати оновлений кошик на екрані та зберегти вміт кошика в Local Storage
 
+
     //Очищаємо старі піци в кошику
     $cart.html("");
 
@@ -309,6 +309,11 @@ function updateCart() {
     Cart.forEach(showOnePizzaInCart);
 
 }
+
+$("#clear").click(function () {
+    Cart = [];
+    updateCart();
+});
 
 exports.removeFromCart = removeFromCart;
 exports.addToCart = addToCart;
