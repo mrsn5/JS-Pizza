@@ -16,6 +16,18 @@ var Cart = [];
 //HTML едемент куди будуть додаватися піци
 var $cart = $("#order");
 
+var sum = 0;
+var orders_num = 0;
+
+function updateSum() {
+    $("#sum").html(sum + " грн");
+    Storage.set("sum", sum);
+}
+
+function updateOrderNumber() {
+    $(".pizza-ordered").html(orders_num);
+    Storage.set("orders_num", orders_num);
+}
 
 function addToCart(pizza, size) {
     //Додавання однієї піци в кошик покупок
@@ -34,8 +46,12 @@ function addToCart(pizza, size) {
             size: size,
             quantity: 1
         });
+        orders_num++;
+        updateOrderNumber();
     }
-
+    // Оновлюємо суму
+    sum += pizza[size].price;
+    updateSum();
     //Оновити вміст кошика на сторінці
     updateCart();
 }
@@ -54,8 +70,11 @@ function initialiseCart() {
     var saved_orders = Storage.get("cart");
     if (saved_orders) {
         Cart = saved_orders;
+        sum = Storage.get("sum");
+        updateSum();
+        orders_num = Storage.get("orders_num");
+        updateOrderNumber();
     }
-
     updateCart();
 }
 
@@ -81,24 +100,33 @@ function updateCart() {
         $node.find(".plus").click(function () {
             //Збільшуємо кількість замовлених піц
             cart_item.quantity += 1;
-
+            sum += cart_item.pizza[cart_item.size].price;
             //Оновлюємо відображення
             updateCart();
+            updateSum();
         });
 
         $node.find(".minus").click(function () {
             //Зменшуємо кількість замовлених піц
-            if (cart_item.quantity == 1) removeFromCart(cart_item);
+            if (cart_item.quantity == 1) {
+                removeFromCart(cart_item);
+                orders_num--;
+                updateOrderNumber();
+            }
             cart_item.quantity -= 1;
-
+            sum -= cart_item.pizza[cart_item.size].price;
             //Оновлюємо відображення
             updateCart();
+            updateSum();
         });
         $node.find(".delete").click(function () {
             removeFromCart(cart_item);
-
+            sum -= cart_item.pizza[cart_item.size].price * cart_item.quantity;
+            orders_num--;
+            updateOrderNumber();
             //Оновлюємо відображення
             updateCart();
+            updateSum();
         });
 
         $cart.append($node);
@@ -112,6 +140,10 @@ function updateCart() {
 $("#clear").click(function () {
     Cart = [];
     updateCart();
+    sum = 0;
+    updateSum();
+    orders_num = 0;
+    updateOrderNumber();
 });
 
 exports.removeFromCart = removeFromCart;

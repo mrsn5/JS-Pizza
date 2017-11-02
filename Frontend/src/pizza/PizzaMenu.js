@@ -36,7 +36,7 @@ function filterPizza(filter) {
     var pizza_shown = [];
 
     Pizza_List.forEach(function(pizza){
-        //Якщо піка відповідає фільтру
+        //Якщо піца відповідає фільтру
         //pizza_shown.push(pizza);
 
         //TODO: зробити фільтри
@@ -49,6 +49,7 @@ function filterPizza(filter) {
 function initialiseMenu() {
     //Показуємо усі піци
     showPizzaList(Pizza_List)
+    $(".number").html(Pizza_List.length);
 }
 
 exports.filterPizza = filterPizza;
