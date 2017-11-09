@@ -1,0 +1,60 @@
+@mainColor: #EA862E;
+@CartWidth: 300px;
+@NavHeight: 60px;
+
+* {
+  font-family: "Helvetica Neue", sans-serif;
+}
+
+@import "pizza/pizza-card";
+@import "pizza/navigation-panel";
+@import "pizza/content";
+@import "pizza/cart";
+
+body {
+  background-color: rgba(255, 208, 7, 0.09);
+  margin-right: @CartWidth;
+  margin-top: @NavHeight;
+}
+
+.container{
+  width: 100%;
+  padding: 0;
+}
+
+
+.footer {
+  width: 100%;
+  background-color: white;
+  color: darkgrey;
+  text-align: center;
+  font-size: 10px;
+  border-top: solid 1px darkgrey;
+  p {
+    margin: 10px;
+  }
+}
+
+.row.display-flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+.thumbnail {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.thumbnail .caption {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  height: 100%;
+  padding-top: 0;
+}
+.txt {
+  padding: 9px;
+  padding-bottom: 0;
+}
+.cl {
+  margin-bottom: 15px;
+}
