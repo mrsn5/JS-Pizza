@@ -41,7 +41,7 @@ function getIngredientsArray(pizza) {
             <div class="options">
                 <% if(pizza.small_size) { %>
                 <% if(pizza.big_size) { %>
-                <div class="option col-sm-6">
+                <div class="option col-sm-6 col-xs-12">
                 <% } else {%>
                 <div class="option col-xs-12">
                 <% } %>
@@ -57,7 +57,7 @@ function getIngredientsArray(pizza) {
                 <% } %>
                 <% if(pizza.big_size) { %>
                 <% if(pizza.small_size) { %>
-                <div class="option col-xs-6">
+                <div class="option option col-sm-6 col-xs-12 ">
                 <% } else {%>
                 <div class="option col-xs-12">
                 <% } %>

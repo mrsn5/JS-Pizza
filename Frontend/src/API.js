@@ -13,7 +13,7 @@ function backendGet(url, callback) {
         error: function() {
             callback(new Error("Ajax Failed"));
         }
-    })
+    });
 }
 
 function backendPost(url, data, callback) {

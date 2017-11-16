@@ -146,6 +146,10 @@ $("#clear").click(function () {
     updateOrderNumber();
 });
 
+$("#orderButt").click(function () {
+    //TODO
+});
+
 exports.removeFromCart = removeFromCart;
 exports.addToCart = addToCart;
 
