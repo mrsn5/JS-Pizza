@@ -1,11 +1,46 @@
 <% include common/header.ejs %>
 <% include common/cart.ejs %>
 
-<div class="contactsInfo col-sm-12 col-md-6">
+<div class="container">
+    <div class="form">
+        <h3>1. Контактні дані</h3>
+        <div class="contactsInfo col-sm-12 col-md-6">
 
-</div>
-<div>
+            <div class="input-group input-group-lg contactsInfo col-xs-12">
+                <span class="input-group-addon">Ім’я</span>
+                <input type="text" class="form-control" id="inputName" placeholder="Ім’я, Прізвище">
+            </div>
+            <br>
 
+            <div class="input-group input-group-lg ph0neInfo col-xs-12">
+                <span class="input-group-addon">Телефон</span>
+                <input type="text" class="form-control" id="inputPhone" placeholder="+380994010999">
+            </div>
+            <br>
+
+            <div class="input-group input-group-lg adressInfo col-xs-12">
+                <span class="input-group-addon">Адреса</span>
+                <input type="text" class="form-control" id="inputAdress" placeholder="Київ, вул. Спаська, 2">
+            </div>
+            <br>
+
+        </div>
+
+        <div class="blank col-md-1"></div>
+        <div class="orange col-sm-12 col-md-5">
+            <div class="summary">
+                <h3>Інформація про замовлення</h3>
+                <p class="order-summery-time">
+                    <b>Приблизний час доставки:</b> -/-
+                </p>
+                <p class="order-summery-adress">
+                    <b>Адреса доставки:</b> -/-
+                </p>
+            </div>
+        </div>
+        <br>
+        <div class="btn btn-warning">Далі <b>></b></div>
+    </div>
 </div>
 
 <% include common/footer.ejs %>
