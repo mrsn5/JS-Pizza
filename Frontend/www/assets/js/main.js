@@ -55,7 +55,7 @@ exports.get = function (key) {
 exports.set = function (key, value) {
     return basil.set(key, value);
 };
-},{"basil.js":8}],3:[function(require,module,exports){
+},{"basil.js":9}],3:[function(require,module,exports){
 /**
  * Created by diana on 12.01.16.
  */
@@ -245,7 +245,7 @@ exports.PizzaMenu_OneItem = ejs.compile("<%\n\nfunction getIngredientsArray(pizz
 
 exports.PizzaCart_OneItem = ejs.compile("<div class=\"row-order\">\n    <h3 class=\"name\"><%= pizza.title %>\n        <% if (size == \"big_size\") {%>\n        (Велика)\n        <%} else {%>\n        (Мала)\n        <% } %>\n    </h3>\n    <div class=\"chars\">\n        <span class=\"size\"><img src=\"assets/images/size-icon.svg\"><span class=\"diemeter\"> 30</span></span>\n        <span class=\"weight\"><img src=\"assets/images/weight.svg\"><span class=\"gramms\"> 460</span></span>\n    </div>\n    <div class=\"price-quant\">\n        <span class=\"price\"><%= pizza[size].price * quantity %> грн</span>\n        <span class=\"btn btn-success plus\">+</span>\n        <span class=\"quant\"><%= quantity %></span>\n        <span class=\"btn btn-danger minus\">&ndash;</span>\n        <span class=\"btn btn-default delete\">&times;</span>\n        <img class=\"pizza-img\" src=\"<%= pizza.icon %>\">\n    </div>\n</div>");
 
-},{"ejs":10}],5:[function(require,module,exports){
+},{"ejs":11}],5:[function(require,module,exports){
 /**
  * Created by chaika on 25.01.16.
  */
@@ -255,13 +255,16 @@ $(function(){
     var PizzaMenu = require('./pizza/PizzaMenu');
     var PizzaCart = require('./pizza/PizzaCart');
     var Pizza_List = require('./Pizza_List');
+    var Pizza_Order = require('./pizza/PizzaOrder');
 
     PizzaCart.initialiseCart();
     PizzaMenu.initialiseMenu();
+    Pizza_Order.initialise();
+
 
 
 });
-},{"./Pizza_List":3,"./pizza/PizzaCart":6,"./pizza/PizzaMenu":7}],6:[function(require,module,exports){
+},{"./Pizza_List":3,"./pizza/PizzaCart":6,"./pizza/PizzaMenu":7,"./pizza/PizzaOrder":8}],6:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
@@ -545,6 +548,88 @@ function initialiseMenu() {
 exports.filterPizza = filterPizza;
 exports.initialiseMenu = initialiseMenu;
 },{"../API":1,"../Pizza_List":3,"../Templates":4,"./PizzaCart":6}],8:[function(require,module,exports){
+/**
+ * Created by sannguyen on 16.11.17.
+ */
+
+var api = require('../API');
+var Storage = require('../LocalStorage');
+
+/* Name validation */
+var nameInput = $("#inputName");
+var nameLabel = $(".label-name");
+function checkName() {
+    //$("#inputName").val()
+    if (nameInput.val()) {
+        nameLabel.addClass("valid");
+        nameLabel.removeClass("invalid");
+        nameInput.addClass("valid");
+        nameInput.removeClass("invalid");
+        return true;
+    } else {
+        nameLabel.removeClass("valid");
+        nameLabel.addClass("invalid");
+        nameInput.addClass("invalid");
+        nameInput.removeClass("valid");
+        return false;
+    }
+}
+
+/* Phone validation*/
+var phoneREGEX = /(\+38)?0\d{9}/;
+var phoneInput = $("#inputPhone");
+var phoneLabel = $(".label-phone");
+function checkPhone () {
+    /*alert("check!");*/
+    if (phoneInput.val().match(phoneREGEX)) {
+        phoneLabel.addClass("valid");
+        phoneLabel.removeClass("invalid");
+        phoneInput.addClass("valid");
+        phoneInput.removeClass("invalid");
+    } else {
+        phoneLabel.removeClass("valid");
+        phoneLabel.addClass("invalid");
+        phoneInput.addClass("invalid");
+        phoneInput.removeClass("valid");
+    }
+}
+function checkAdress() {
+    
+}
+
+
+function initialise() {
+    $("#submitButt").click(function () {
+
+        checkName();
+        checkPhone();
+        checkAdress();
+        $("#inputName").bind("input", function () {
+            checkName();
+        });
+
+        $("#inputPhone").bind("input", function () {
+            /*alert("check!@!");*/
+            checkPhone();
+        });
+
+        $("#inputAdress").bind("input", function () {
+            checkAdress();
+        });
+
+        api.createOrder(Storage.get("cart"), function (err, res) {
+
+            if(err){
+                alert("Error");
+            }
+        });
+    });
+}
+
+exports.initialise = initialise;
+
+
+},{"../API":1,"../LocalStorage":2}],9:[function(require,module,exports){
 (function () {
 	// Basil
 	var Basil = function (options) {
@@ -932,9 +1017,9 @@ exports.initialiseMenu = initialiseMenu;
 
 })();
 
-},{}],9:[function(require,module,exports){
-
 },{}],10:[function(require,module,exports){
+
+},{}],11:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -1802,7 +1887,7 @@ if (typeof window != 'undefined') {
   window.ejs = exports;
 }
 
-},{"../package.json":12,"./utils":11,"fs":9,"path":13}],11:[function(require,module,exports){
+},{"../package.json":13,"./utils":12,"fs":10,"path":14}],12:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -1968,7 +2053,7 @@ exports.cache = {
   }
 };
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports={
   "_args": [
     [
@@ -2083,7 +2168,7 @@ module.exports={
   "version": "2.5.7"
 }
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -2311,7 +2396,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":14}],14:[function(require,module,exports){
+},{"_process":15}],15:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 

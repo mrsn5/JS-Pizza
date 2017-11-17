@@ -1,5 +1,4 @@
 <% include common/header.ejs %>
-<% include common/cart.ejs %>
 
 <div class="container">
     <div class="menu">
@@ -17,6 +16,23 @@
     </div>
     <div class="row display-flex" id="pizza_list">
 
+    </div>
+</div>
+
+<div id="cart">
+    <div class="order-header">
+        <h3>Замовлення <span class="pizza-ordered">0</span></h3>
+        <span id="clear">Очистити</span>
+    </div>
+    <div id="order">
+
+    </div>
+    <div class="order-butt">
+        <div class="summary">
+            <h4>Сума замовлення</h4>
+            <h4 id="sum">0 грн</h4>
+        </div>
+        <div id="orderButt" class="btn btn-warning" onClick='location.href="/order.html"'>Замовити</div>
     </div>
 </div>
 
