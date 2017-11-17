@@ -575,7 +575,7 @@ function checkName() {
     }
 }
 
-/* Phone validation*/
+/* Phone validation */
 var phoneREGEX = /(\+38)?0\d{9}/;
 var phoneInput = $("#inputPhone");
 var phoneLabel = $(".label-phone");
@@ -586,15 +586,22 @@ function checkPhone () {
         phoneLabel.removeClass("invalid");
         phoneInput.addClass("valid");
         phoneInput.removeClass("invalid");
+        return true;
     } else {
         phoneLabel.removeClass("valid");
         phoneLabel.addClass("invalid");
         phoneInput.addClass("invalid");
         phoneInput.removeClass("valid");
+        return false;
     }
 }
+
+/* Adress validation */
+var adressInput = $("#inputAdress");
+var adressLabel = $(".label-adress");
 function checkAdress() {
-    
+    // TODO
+    return true;
 }
 
 
@@ -604,25 +611,28 @@ function initialise() {
         checkName();
         checkPhone();
         checkAdress();
-        $("#inputName").bind("input", function () {
-            checkName();
-        });
+        if (checkName() && checkPhone() && checkAdress()){
+            api.createOrder(Storage.get("cart"), function (err, res) {
 
-        $("#inputPhone").bind("input", function () {
-            /*alert("check!@!");*/
-            checkPhone();
-        });
+                if(err){
+                    alert("Error");
+                }
+            });
+        } else {
+            $("#inputName").bind("input", function () {
+                checkName();
+            });
 
-        $("#inputAdress").bind("input", function () {
-            checkAdress();
-        });
+            $("#inputPhone").bind("input", function () {
+                /*alert("check!@!");*/
+                checkPhone();
+            });
 
-        api.createOrder(Storage.get("cart"), function (err, res) {
+            $("#inputAdress").bind("input", function () {
+                checkAdress();
+            });
+        }
 
-            if(err){
-                alert("Error");
-            }
-        });
     });
 }
 
