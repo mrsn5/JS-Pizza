@@ -62,7 +62,12 @@ function initialise() {
         checkPhone();
         checkAdress();
         if (checkName() && checkPhone() && checkAdress()){
-            api.createOrder(Storage.get("cart"), function (err, res) {
+            api.createOrder({
+                name: nameInput.val(),
+                phone: phoneInput.val(),
+                adress: adressInput.val(),
+                pizzas: Storage.get("cart")
+            }, function (err, res) {
 
                 if(err){
                     alert("Error");
