@@ -4,6 +4,7 @@
 
 var api = require('../API');
 var Storage = require('../LocalStorage');
+var MAP = require('../Maps');
 
 /* Name validation */
 var nameInput = $("#inputName");
@@ -56,6 +57,28 @@ function checkAdress() {
 
 
 function initialise() {
+
+    $("#inputAdress").bind("input", function () {
+        console.log(adressInput.val());
+        MAP.geocodeAddress(adressInput.val(), function (err, coordinates) {
+            if(err){
+                console.log("Can't find adress")
+            } else {
+                MAP.setMarker(coordinates);
+                MAP.calculateRoute(new google.maps.LatLng(50.464379, 30.519131), coordinates, function (err, res) {
+                    if (res) {
+                        $(".order-summery-time").html("<b>Приблизний час доставки:</b> " + res);
+                        $(".order-summery-adress").html("<b>Адреса доставки:</b> " + adressInput.val());
+
+                    } else {
+                        $(".order-summery-time").html("<b>Приблизний час доставки:</b> -/-");
+                        $(".order-summery-adress").html("<b>Адреса доставки:</b> -/-");
+                    }
+                });
+            }
+        });
+    });
+
     $("#submitButt").click(function () {
 
         checkName();
@@ -70,7 +93,7 @@ function initialise() {
             }, function (err, res) {
 
                 if(err){
-                    alert("Error");
+                    console.log("Can't create order")
                 }
             });
         } else {
@@ -91,5 +114,10 @@ function initialise() {
     });
 }
 
+function setAdress(value) {
+    adressInput.val(value);
+}
+
 exports.initialise = initialise;
+exports.setAdress = setAdress;
 
