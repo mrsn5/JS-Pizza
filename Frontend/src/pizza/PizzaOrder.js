@@ -9,6 +9,7 @@ var MAP = require('../Maps');
 /* Name validation */
 var nameInput = $("#inputName");
 var nameLabel = $(".label-name");
+var nameHint = $(".nameHint");
 function checkName() {
     //$("#inputName").val()
     if (nameInput.val()) {
@@ -16,12 +17,14 @@ function checkName() {
         nameLabel.removeClass("invalid");
         nameInput.addClass("valid");
         nameInput.removeClass("invalid");
+        nameHint.addClass("none");
         return true;
     } else {
         nameLabel.removeClass("valid");
         nameLabel.addClass("invalid");
         nameInput.addClass("invalid");
         nameInput.removeClass("valid");
+        nameHint.removeClass("none");
         return false;
     }
 }
@@ -30,6 +33,7 @@ function checkName() {
 var phoneREGEX = /(\+38)?0\d{9}/;
 var phoneInput = $("#inputPhone");
 var phoneLabel = $(".label-phone");
+var phoneHint = $(".phoneHint");
 function checkPhone () {
     /*alert("check!");*/
     if (phoneInput.val().match(phoneREGEX)) {
@@ -37,12 +41,14 @@ function checkPhone () {
         phoneLabel.removeClass("invalid");
         phoneInput.addClass("valid");
         phoneInput.removeClass("invalid");
+        phoneHint.addClass("none");
         return true;
     } else {
         phoneLabel.removeClass("valid");
         phoneLabel.addClass("invalid");
         phoneInput.addClass("invalid");
         phoneInput.removeClass("valid");
+        phoneHint.removeClass("none");
         return false;
     }
 }
@@ -50,9 +56,26 @@ function checkPhone () {
 /* Adress validation */
 var adressInput = $("#inputAdress");
 var adressLabel = $(".label-adress");
+var adressHint = $(".adressHint");
 function checkAdress() {
-    // TODO
-    return true;
+    MAP.getFullAddress(adressInput.val(), function (err, adress) {
+        console.log("+ " + adress);
+        if(!err) {
+            adressInput.addClass("valid");
+            adressInput.removeClass("invalid");
+            adressLabel.addClass("valid");
+            adressLabel.removeClass("invalid");
+            adressHint.addClass("none");
+            return true;
+        } else {
+            adressInput.removeClass("valid");
+            adressInput.addClass("invalid");
+            adressLabel.addClass("invalid");
+            adressLabel.removeClass("valid");
+            adressHint.removeClass("none");
+            return false;
+        }
+    });
 }
 
 
@@ -68,8 +91,12 @@ function initialise() {
                 MAP.calculateRoute(new google.maps.LatLng(50.464379, 30.519131), coordinates, function (err, res) {
                     if (res) {
                         $(".order-summery-time").html("<b>Приблизний час доставки:</b> " + res);
-                        $(".order-summery-adress").html("<b>Адреса доставки:</b> " + adressInput.val());
-
+                        MAP.getFullAddress(adressInput.val(), function (err, adress) {
+                            if(!err) {
+                                console.log(adress);
+                                $(".order-summery-adress").html("<b>Адреса доставки:</b> " + adress);
+                            }
+                        });
                     } else {
                         $(".order-summery-time").html("<b>Приблизний час доставки:</b> -/-");
                         $(".order-summery-adress").html("<b>Адреса доставки:</b> -/-");
@@ -120,4 +147,5 @@ function setAdress(value) {
 
 exports.initialise = initialise;
 exports.setAdress = setAdress;
+exports.checkAdress = checkAdress;
 
