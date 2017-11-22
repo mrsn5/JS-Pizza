@@ -39,7 +39,6 @@ exports.getPizzaList = function(callback) {
 exports.createOrder = function(order_info, callback) {
     backendPost("/api/create-order/", order_info, callback);
 };
-
 },{}],2:[function(require,module,exports){
 /**
  * Created by sannguyen on 02.11.17.
@@ -64,7 +63,7 @@ var Pizza_Order = require('./pizza/PizzaOrder');
 
 var styledMapType = new google.maps.StyledMapType(
     [
-        {elementType: 'geometry', stylers: [{color: '#ebe3cd'}]},
+        {elementType: 'geometry', stylers: [{color: '#eee3d7'}]},
         {elementType: 'labels.text.fill', stylers: [{color: '#523735'}]},
         {elementType: 'labels.text.stroke', stylers: [{color: '#f5f1e6'}]},
         {
@@ -100,12 +99,12 @@ var styledMapType = new google.maps.StyledMapType(
         {
             featureType: 'poi.park',
             elementType: 'geometry.fill',
-            stylers: [{color: '#a5b076'}]
+            stylers: [{color: '#9bd77e'}]
         },
         {
             featureType: 'poi.park',
             elementType: 'labels.text.fill',
-            stylers: [{color: '#447530'}]
+            stylers: [{color: '#76cb54'}]
         },
         {
             featureType: 'road',
@@ -165,7 +164,7 @@ var styledMapType = new google.maps.StyledMapType(
         {
             featureType: 'water',
             elementType: 'geometry.fill',
-            stylers: [{color: '#b9d3c2'}]
+            stylers: [{color: '#b8e0df'}]
         },
         {
             featureType: 'water',
@@ -173,7 +172,7 @@ var styledMapType = new google.maps.StyledMapType(
             stylers: [{color: '#92998d'}]
         }
     ],
-    {name: 'Styled Map'});
+    {name: 'Pizza Map'});
 
 
 var map;
@@ -666,6 +665,8 @@ $("#orderButt").click(function () {
     //TODO
 });
 
+
+
 exports.removeFromCart = removeFromCart;
 exports.addToCart = addToCart;
 
@@ -673,6 +674,8 @@ exports.getPizzaInCart = getPizzaInCart;
 exports.initialiseCart = initialiseCart;
 
 exports.PizzaSize = PizzaSize;
+
+exports.getPizzaInCart = getPizzaInCart;
 },{"../LocalStorage":2,"../Templates":5}],8:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
@@ -804,6 +807,7 @@ exports.initialiseMenu = initialiseMenu;
 var api = require('../API');
 var Storage = require('../LocalStorage');
 var MAP = require('../Maps');
+var Cart = require('./PizzaCart');
 
 /* Name validation */
 var nameInput = $("#inputName");
@@ -857,7 +861,9 @@ var adressInput = $("#inputAdress");
 var adressLabel = $(".label-adress");
 var adressHint = $(".adressHint");
 function checkAdress() {
-    MAP.getFullAddress(adressInput.val(), function (err, adress) {
+    return true;
+
+    /*MAP.getFullAddress(adressInput.val(), function (err, adress) {
         console.log("+ " + adress);
         if(!err) {
             adressInput.addClass("valid");
@@ -874,7 +880,7 @@ function checkAdress() {
             adressHint.removeClass("none");
             return false;
         }
-    });
+    });*/
 }
 
 
@@ -911,11 +917,12 @@ function initialise() {
         checkPhone();
         checkAdress();
         if (checkName() && checkPhone() && checkAdress()){
+            console.log("Creating order!");
             api.createOrder({
                 name: nameInput.val(),
                 phone: phoneInput.val(),
                 adress: adressInput.val(),
-                pizzas: Storage.get("cart")
+                pizzas: Cart.getPizzaInCart()
             }, function (err, res) {
 
                 if(err){
@@ -949,7 +956,7 @@ exports.setAdress = setAdress;
 exports.checkAdress = checkAdress;
 
 
-},{"../API":1,"../LocalStorage":2,"../Maps":3}],10:[function(require,module,exports){
+},{"../API":1,"../LocalStorage":2,"../Maps":3,"./PizzaCart":7}],10:[function(require,module,exports){
 (function () {
 	// Basil
 	var Basil = function (options) {

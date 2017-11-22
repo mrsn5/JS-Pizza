@@ -150,6 +150,8 @@ $("#orderButt").click(function () {
     //TODO
 });
 
+
+
 exports.removeFromCart = removeFromCart;
 exports.addToCart = addToCart;
 
@@ -157,3 +159,5 @@ exports.getPizzaInCart = getPizzaInCart;
 exports.initialiseCart = initialiseCart;
 
 exports.PizzaSize = PizzaSize;
+
+exports.getPizzaInCart = getPizzaInCart;

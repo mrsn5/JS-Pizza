@@ -6,7 +6,7 @@ var Pizza_Order = require('./pizza/PizzaOrder');
 
 var styledMapType = new google.maps.StyledMapType(
     [
-        {elementType: 'geometry', stylers: [{color: '#ebe3cd'}]},
+        {elementType: 'geometry', stylers: [{color: '#eee3d7'}]},
         {elementType: 'labels.text.fill', stylers: [{color: '#523735'}]},
         {elementType: 'labels.text.stroke', stylers: [{color: '#f5f1e6'}]},
         {
@@ -42,12 +42,12 @@ var styledMapType = new google.maps.StyledMapType(
         {
             featureType: 'poi.park',
             elementType: 'geometry.fill',
-            stylers: [{color: '#a5b076'}]
+            stylers: [{color: '#9bd77e'}]
         },
         {
             featureType: 'poi.park',
             elementType: 'labels.text.fill',
-            stylers: [{color: '#447530'}]
+            stylers: [{color: '#76cb54'}]
         },
         {
             featureType: 'road',
@@ -107,7 +107,7 @@ var styledMapType = new google.maps.StyledMapType(
         {
             featureType: 'water',
             elementType: 'geometry.fill',
-            stylers: [{color: '#b9d3c2'}]
+            stylers: [{color: '#b8e0df'}]
         },
         {
             featureType: 'water',
@@ -115,7 +115,7 @@ var styledMapType = new google.maps.StyledMapType(
             stylers: [{color: '#92998d'}]
         }
     ],
-    {name: 'Styled Map'});
+    {name: 'Pizza Map'});
 
 
 var map;

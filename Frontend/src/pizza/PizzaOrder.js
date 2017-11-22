@@ -5,6 +5,7 @@
 var api = require('../API');
 var Storage = require('../LocalStorage');
 var MAP = require('../Maps');
+var Cart = require('./PizzaCart');
 
 /* Name validation */
 var nameInput = $("#inputName");
@@ -58,7 +59,9 @@ var adressInput = $("#inputAdress");
 var adressLabel = $(".label-adress");
 var adressHint = $(".adressHint");
 function checkAdress() {
-    MAP.getFullAddress(adressInput.val(), function (err, adress) {
+    return true;
+
+    /*MAP.getFullAddress(adressInput.val(), function (err, adress) {
         console.log("+ " + adress);
         if(!err) {
             adressInput.addClass("valid");
@@ -75,7 +78,7 @@ function checkAdress() {
             adressHint.removeClass("none");
             return false;
         }
-    });
+    });*/
 }
 
 
@@ -112,11 +115,12 @@ function initialise() {
         checkPhone();
         checkAdress();
         if (checkName() && checkPhone() && checkAdress()){
+            console.log("Creating order!");
             api.createOrder({
                 name: nameInput.val(),
                 phone: phoneInput.val(),
                 adress: adressInput.val(),
-                pizzas: Storage.get("cart")
+                pizzas: Cart.getPizzaInCart()
             }, function (err, res) {
 
                 if(err){
