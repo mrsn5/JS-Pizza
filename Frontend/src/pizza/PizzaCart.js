@@ -135,9 +135,9 @@ function updateCart() {
     Cart.forEach(showOnePizzaInCart);
     Storage.set("cart",	Cart);
     if (Cart.length === 0){
-        $("#orderButt").attr("disabled", "disabled");
+        $("#orderButt").attr( "disabled", "disabled" );
     } else {
-        $("#orderButt").prop("disabled", false);
+        $("#orderButt").removeAttr( "disabled" );
     }
 
 }
@@ -157,6 +157,11 @@ $("#orderButt").click(function () {
     }
 });
 
+$("#editButt").click(function () {
+    if(Cart.length !== 0){
+        location.href="/";
+    }
+});
 
 
 exports.removeFromCart = removeFromCart;

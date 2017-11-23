@@ -82,7 +82,7 @@ function checkAdress() {
 function initialise() {
 
     $("#inputAdress").bind("input", function () {
-        console.log(adressInput.val());
+        //console.log(adressInput.val());
         MAP.geocodeAddress(adressInput.val(), function (err, coordinates) {
             if (err) {
                 console.log("Can't find adress")

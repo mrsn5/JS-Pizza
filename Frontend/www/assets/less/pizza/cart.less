@@ -1,4 +1,4 @@
-#cart {
+#cart, #cartOrder {
   position: fixed;
   right: 0;
   top: 0;
@@ -117,8 +117,19 @@
     min-width: @CartWidth;
   }
 
-  #cart {
+  #cart, #cartOrder {
     right: auto;
     left: @CartWidth;
+  }
+}
+
+#cartOrder{
+  .btn, .delete{
+    display: none;
+  }
+}
+#cart {
+  .quantitylbl{
+    display: none;
   }
 }
