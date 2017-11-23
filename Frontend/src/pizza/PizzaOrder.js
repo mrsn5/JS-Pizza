@@ -6,6 +6,7 @@ var api = require('../API');
 var Storage = require('../LocalStorage');
 var MAP = require('../Maps');
 var Cart = require('./PizzaCart');
+var LiqPay = require("../liqpay");
 
 /* Name validation */
 var nameInput = $("#inputName");
@@ -35,7 +36,7 @@ var phoneREGEX = /(\+38)?0\d{9}/;
 var phoneInput = $("#inputPhone");
 var phoneLabel = $(".label-phone");
 var phoneHint = $(".phoneHint");
-function checkPhone () {
+function checkPhone() {
     /*alert("check!");*/
     if (phoneInput.val().match(phoneREGEX)) {
         phoneLabel.addClass("valid");
@@ -59,26 +60,22 @@ var adressInput = $("#inputAdress");
 var adressLabel = $(".label-adress");
 var adressHint = $(".adressHint");
 function checkAdress() {
-    return true;
 
-    /*MAP.getFullAddress(adressInput.val(), function (err, adress) {
-        console.log("+ " + adress);
-        if(!err) {
-            adressInput.addClass("valid");
-            adressInput.removeClass("invalid");
-            adressLabel.addClass("valid");
-            adressLabel.removeClass("invalid");
-            adressHint.addClass("none");
-            return true;
-        } else {
-            adressInput.removeClass("valid");
-            adressInput.addClass("invalid");
-            adressLabel.addClass("invalid");
-            adressLabel.removeClass("valid");
-            adressHint.removeClass("none");
-            return false;
-        }
-    });*/
+    if (adressInput.val()) {
+        adressInput.addClass("valid");
+        adressInput.removeClass("invalid");
+        adressLabel.addClass("valid");
+        adressLabel.removeClass("invalid");
+        adressHint.addClass("none");
+        return true;
+    } else {
+        adressInput.removeClass("valid");
+        adressInput.addClass("invalid");
+        adressLabel.addClass("invalid");
+        adressLabel.removeClass("valid");
+        adressHint.removeClass("none");
+        return false;
+    }
 }
 
 
@@ -87,7 +84,7 @@ function initialise() {
     $("#inputAdress").bind("input", function () {
         console.log(adressInput.val());
         MAP.geocodeAddress(adressInput.val(), function (err, coordinates) {
-            if(err){
+            if (err) {
                 console.log("Can't find adress")
             } else {
                 MAP.setMarker(coordinates);
@@ -95,7 +92,7 @@ function initialise() {
                     if (res) {
                         $(".order-summery-time").html("<b>Приблизний час доставки:</b> " + res);
                         MAP.getFullAddress(adressInput.val(), function (err, adress) {
-                            if(!err) {
+                            if (!err) {
                                 console.log(adress);
                                 $(".order-summery-adress").html("<b>Адреса доставки:</b> " + adress);
                             }
@@ -114,7 +111,7 @@ function initialise() {
         checkName();
         checkPhone();
         checkAdress();
-        if (checkName() && checkPhone() && checkAdress()){
+        if (checkName() && checkPhone() && checkAdress()) {
             console.log("Creating order!");
             api.createOrder({
                 name: nameInput.val(),
@@ -123,8 +120,10 @@ function initialise() {
                 pizzas: Cart.getPizzaInCart()
             }, function (err, res) {
 
-                if(err){
+                if (err) {
                     console.log("Can't create order")
+                } else {
+                    window.LiqPayCheckoutCallback = LiqPay.initialize(res.data, res.signature);
                 }
             });
         } else {

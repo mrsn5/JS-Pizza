@@ -54,7 +54,7 @@ exports.get = function (key) {
 exports.set = function (key, value) {
     return basil.set(key, value);
 };
-},{"basil.js":10}],3:[function(require,module,exports){
+},{"basil.js":11}],3:[function(require,module,exports){
 /**
  * Created by sannguyen on 18.11.17.
  */
@@ -301,7 +301,7 @@ exports.setMarker = setMarker;
 exports.calculateRoute = calculateRoute;
 exports.geocodeLatLng = geocodeLatLng;
 exports.getFullAddress = getFullAddress;
-},{"./pizza/PizzaOrder":9}],4:[function(require,module,exports){
+},{"./pizza/PizzaOrder":10}],4:[function(require,module,exports){
 /**
  * Created by diana on 12.01.16.
  */
@@ -491,7 +491,28 @@ exports.PizzaMenu_OneItem = ejs.compile("<%\n\nfunction getIngredientsArray(pizz
 
 exports.PizzaCart_OneItem = ejs.compile("<div class=\"row-order\">\n    <h3 class=\"name\"><%= pizza.title %>\n        <% if (size == \"big_size\") {%>\n        (Велика)\n        <%} else {%>\n        (Мала)\n        <% } %>\n    </h3>\n    <div class=\"chars\">\n        <span class=\"size\"><img src=\"assets/images/size-icon.svg\"><span class=\"diemeter\"> 30</span></span>\n        <span class=\"weight\"><img src=\"assets/images/weight.svg\"><span class=\"gramms\"> 460</span></span>\n    </div>\n    <div class=\"price-quant\">\n        <span class=\"price\"><%= pizza[size].price * quantity %> грн</span>\n        <span class=\"btn btn-success plus\">+</span>\n        <span class=\"quant\"><%= quantity %></span>\n        <span class=\"btn btn-danger minus\">&ndash;</span>\n        <span class=\"btn btn-default delete\">&times;</span>\n        <img class=\"pizza-img\" src=\"<%= pizza.icon %>\">\n    </div>\n</div>");
 
-},{"ejs":12}],6:[function(require,module,exports){
+},{"ejs":13}],6:[function(require,module,exports){
+/**
+ * Created by sannguyen on 23.11.17.
+ */
+
+function initialize(data, signature) {
+    LiqPayCheckout.init({
+        data: data,
+        signature: signature,
+        embedTo: "#liqpay",
+        mode: "popup" // embed || popup
+    }).on("liqpay.callback", function(data){
+        console.log(data.status);
+        console.log(data);
+    }).on("liqpay.ready", function(data){ // ready
+    }).on("liqpay.close", function(data){
+        // close
+    });
+}
+
+exports.initialize = initialize;
+},{}],7:[function(require,module,exports){
 /**
  * Created by chaika on 25.01.16.
  */
@@ -512,7 +533,7 @@ $(function(){
 
 
 });
-},{"./Maps":3,"./Pizza_List":4,"./pizza/PizzaCart":7,"./pizza/PizzaMenu":8,"./pizza/PizzaOrder":9}],7:[function(require,module,exports){
+},{"./Maps":3,"./Pizza_List":4,"./pizza/PizzaCart":8,"./pizza/PizzaMenu":9,"./pizza/PizzaOrder":10}],8:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
@@ -649,6 +670,11 @@ function updateCart() {
 
     Cart.forEach(showOnePizzaInCart);
     Storage.set("cart",	Cart);
+    if (Cart.length === 0){
+        $("#orderButt").attr("disabled", "disabled");
+    } else {
+        $("#orderButt").prop("disabled", false);
+    }
 
 }
 
@@ -662,7 +688,9 @@ $("#clear").click(function () {
 });
 
 $("#orderButt").click(function () {
-    //TODO
+    if(Cart.length !== 0){
+        location.href="/order.html";
+    }
 });
 
 
@@ -676,7 +704,7 @@ exports.initialiseCart = initialiseCart;
 exports.PizzaSize = PizzaSize;
 
 exports.getPizzaInCart = getPizzaInCart;
-},{"../LocalStorage":2,"../Templates":5}],8:[function(require,module,exports){
+},{"../LocalStorage":2,"../Templates":5}],9:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
@@ -799,7 +827,7 @@ function initialiseMenu() {
 
 exports.filterPizza = filterPizza;
 exports.initialiseMenu = initialiseMenu;
-},{"../API":1,"../Pizza_List":4,"../Templates":5,"./PizzaCart":7}],9:[function(require,module,exports){
+},{"../API":1,"../Pizza_List":4,"../Templates":5,"./PizzaCart":8}],10:[function(require,module,exports){
 /**
  * Created by sannguyen on 16.11.17.
  */
@@ -808,6 +836,7 @@ var api = require('../API');
 var Storage = require('../LocalStorage');
 var MAP = require('../Maps');
 var Cart = require('./PizzaCart');
+var LiqPay = require("../liqpay");
 
 /* Name validation */
 var nameInput = $("#inputName");
@@ -837,7 +866,7 @@ var phoneREGEX = /(\+38)?0\d{9}/;
 var phoneInput = $("#inputPhone");
 var phoneLabel = $(".label-phone");
 var phoneHint = $(".phoneHint");
-function checkPhone () {
+function checkPhone() {
     /*alert("check!");*/
     if (phoneInput.val().match(phoneREGEX)) {
         phoneLabel.addClass("valid");
@@ -861,26 +890,22 @@ var adressInput = $("#inputAdress");
 var adressLabel = $(".label-adress");
 var adressHint = $(".adressHint");
 function checkAdress() {
-    return true;
 
-    /*MAP.getFullAddress(adressInput.val(), function (err, adress) {
-        console.log("+ " + adress);
-        if(!err) {
-            adressInput.addClass("valid");
-            adressInput.removeClass("invalid");
-            adressLabel.addClass("valid");
-            adressLabel.removeClass("invalid");
-            adressHint.addClass("none");
-            return true;
-        } else {
-            adressInput.removeClass("valid");
-            adressInput.addClass("invalid");
-            adressLabel.addClass("invalid");
-            adressLabel.removeClass("valid");
-            adressHint.removeClass("none");
-            return false;
-        }
-    });*/
+    if (adressInput.val()) {
+        adressInput.addClass("valid");
+        adressInput.removeClass("invalid");
+        adressLabel.addClass("valid");
+        adressLabel.removeClass("invalid");
+        adressHint.addClass("none");
+        return true;
+    } else {
+        adressInput.removeClass("valid");
+        adressInput.addClass("invalid");
+        adressLabel.addClass("invalid");
+        adressLabel.removeClass("valid");
+        adressHint.removeClass("none");
+        return false;
+    }
 }
 
 
@@ -889,7 +914,7 @@ function initialise() {
     $("#inputAdress").bind("input", function () {
         console.log(adressInput.val());
         MAP.geocodeAddress(adressInput.val(), function (err, coordinates) {
-            if(err){
+            if (err) {
                 console.log("Can't find adress")
             } else {
                 MAP.setMarker(coordinates);
@@ -897,7 +922,7 @@ function initialise() {
                     if (res) {
                         $(".order-summery-time").html("<b>Приблизний час доставки:</b> " + res);
                         MAP.getFullAddress(adressInput.val(), function (err, adress) {
-                            if(!err) {
+                            if (!err) {
                                 console.log(adress);
                                 $(".order-summery-adress").html("<b>Адреса доставки:</b> " + adress);
                             }
@@ -916,7 +941,7 @@ function initialise() {
         checkName();
         checkPhone();
         checkAdress();
-        if (checkName() && checkPhone() && checkAdress()){
+        if (checkName() && checkPhone() && checkAdress()) {
             console.log("Creating order!");
             api.createOrder({
                 name: nameInput.val(),
@@ -925,8 +950,10 @@ function initialise() {
                 pizzas: Cart.getPizzaInCart()
             }, function (err, res) {
 
-                if(err){
+                if (err) {
                     console.log("Can't create order")
+                } else {
+                    window.LiqPayCheckoutCallback = LiqPay.initialize(res.data, res.signature);
                 }
             });
         } else {
@@ -956,7 +983,7 @@ exports.setAdress = setAdress;
 exports.checkAdress = checkAdress;
 
 
-},{"../API":1,"../LocalStorage":2,"../Maps":3,"./PizzaCart":7}],10:[function(require,module,exports){
+},{"../API":1,"../LocalStorage":2,"../Maps":3,"../liqpay":6,"./PizzaCart":8}],11:[function(require,module,exports){
 (function () {
 	// Basil
 	var Basil = function (options) {
@@ -1344,9 +1371,9 @@ exports.checkAdress = checkAdress;
 
 })();
 
-},{}],11:[function(require,module,exports){
-
 },{}],12:[function(require,module,exports){
+
+},{}],13:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -2214,7 +2241,7 @@ if (typeof window != 'undefined') {
   window.ejs = exports;
 }
 
-},{"../package.json":14,"./utils":13,"fs":11,"path":15}],13:[function(require,module,exports){
+},{"../package.json":15,"./utils":14,"fs":12,"path":16}],14:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -2380,7 +2407,7 @@ exports.cache = {
   }
 };
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 module.exports={
   "_args": [
     [
@@ -2495,7 +2522,7 @@ module.exports={
   "version": "2.5.7"
 }
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -2723,7 +2750,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":16}],16:[function(require,module,exports){
+},{"_process":17}],17:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -2909,4 +2936,4 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[6]);
+},{}]},{},[7]);

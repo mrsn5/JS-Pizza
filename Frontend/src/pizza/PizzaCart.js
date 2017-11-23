@@ -134,6 +134,11 @@ function updateCart() {
 
     Cart.forEach(showOnePizzaInCart);
     Storage.set("cart",	Cart);
+    if (Cart.length === 0){
+        $("#orderButt").attr("disabled", "disabled");
+    } else {
+        $("#orderButt").prop("disabled", false);
+    }
 
 }
 
@@ -147,7 +152,9 @@ $("#clear").click(function () {
 });
 
 $("#orderButt").click(function () {
-    //TODO
+    if(Cart.length !== 0){
+        location.href="/order.html";
+    }
 });
 
 

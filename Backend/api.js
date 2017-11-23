@@ -55,19 +55,9 @@ exports.createOrder = function(req, res) {
     var data = base64(JSON.stringify(order));
     var signature = sha1("Lm6y2H4RAsgXUjVrWGx1J0kGe7mmOl42ELNPuqWy" + data + "Lm6y2H4RAsgXUjVrWGx1J0kGe7mmOl42ELNPuqWy");
 
-    LiqPayCheckout.init({
+    res.send({
+        success: true,
         data: data,
-        signature: signature,
-        embedTo: "#liqpay",
-        mode: "popup" // embed || popup
-    }).on("liqpay.callback", function(data){
-        console.log(data.status);
-        console.log(data);
-    }).on("liqpay.ready", function(data){ // ready
-    }).on("liqpay.close", function(data){
-    // close
+        signature: signature
     });
-    /*res.send({
-        success: true
-    });*/
 };
