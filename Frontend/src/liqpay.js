@@ -2,6 +2,8 @@
  * Created by sannguyen on 23.11.17.
  */
 
+var Cart = require("./pizza/PizzaCart");
+
 function initialize(data, signature) {
     LiqPayCheckout.init({
         data: data,
@@ -10,10 +12,14 @@ function initialize(data, signature) {
         mode: "popup" // embed || popup
     }).on("liqpay.callback", function(data){
         console.log(data.status);
+        if(data.result == "success")
+            Cart.clear();
         console.log(data);
     }).on("liqpay.ready", function(data){ // ready
+        console.log(data);
     }).on("liqpay.close", function(data){
-        // close
+        console.log(data);
+        location.href="/";
     });
 }
 

@@ -496,6 +496,8 @@ exports.PizzaCart_OneItem = ejs.compile("<div class=\"row-order\">\n    <h3 clas
  * Created by sannguyen on 23.11.17.
  */
 
+var Cart = require("./pizza/PizzaCart");
+
 function initialize(data, signature) {
     LiqPayCheckout.init({
         data: data,
@@ -504,15 +506,19 @@ function initialize(data, signature) {
         mode: "popup" // embed || popup
     }).on("liqpay.callback", function(data){
         console.log(data.status);
+        if(data.result == "success")
+            Cart.clear();
         console.log(data);
     }).on("liqpay.ready", function(data){ // ready
+        console.log(data);
     }).on("liqpay.close", function(data){
-        // close
+        console.log(data);
+        location.href="/";
     });
 }
 
 exports.initialize = initialize;
-},{}],7:[function(require,module,exports){
+},{"./pizza/PizzaCart":8}],7:[function(require,module,exports){
 /**
  * Created by chaika on 25.01.16.
  */
@@ -679,13 +685,18 @@ function updateCart() {
 }
 
 $("#clear").click(function () {
+    clear();
+});
+
+function clear(){
     Cart = [];
     updateCart();
     sum = 0;
     updateSum();
     orders_num = 0;
     updateOrderNumber();
-});
+}
+
 
 $("#orderButt").click(function () {
     if(Cart.length !== 0){
@@ -709,6 +720,7 @@ exports.initialiseCart = initialiseCart;
 exports.PizzaSize = PizzaSize;
 
 exports.getPizzaInCart = getPizzaInCart;
+exports.clear = clear;
 },{"../LocalStorage":2,"../Templates":5}],9:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.

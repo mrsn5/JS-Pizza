@@ -143,13 +143,18 @@ function updateCart() {
 }
 
 $("#clear").click(function () {
+    clear();
+});
+
+function clear(){
     Cart = [];
     updateCart();
     sum = 0;
     updateSum();
     orders_num = 0;
     updateOrderNumber();
-});
+}
+
 
 $("#orderButt").click(function () {
     if(Cart.length !== 0){
@@ -173,3 +178,4 @@ exports.initialiseCart = initialiseCart;
 exports.PizzaSize = PizzaSize;
 
 exports.getPizzaInCart = getPizzaInCart;
+exports.clear = clear;
